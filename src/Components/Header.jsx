@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 function Header() {
   return (
     <div>
-         <Navbar className='bg-dark' >
+         <Navbar className='bg-dark' style={{height:"80px"}} >
         <Container>
           <Link to={'/'}  style={{ textDecoration: "none", color: "white" }} className='me-3'>Home</Link>
           <Nav className="me-auto">
