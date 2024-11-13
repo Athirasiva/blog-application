@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import "./blog.css";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid2";
+import { addBlog } from "../services/allAPI";
+
 function AddBlog() {
+  const [blogs,setBlogs] = useState([{
+    title : "",
+    content:"",
+    image:""
+  }])
+  const onHandleSubmit = async() =>{
+    const {title,content,image} = blogs
+    if (!title || !content || !image) {
+      alert("Enter All Details")
+    }
+    else{
+      const res = await addBlog(blogs)
+      if (res.status == 201) {
+        alert(" Blog added successfully")
+      }
+      else{
+        console.log(res.error);
+        
+      }
+      
+    }
+
+  }
   return (
     <div
       className="w-100 d-flex   align-items-center bg-light justify-content-center "
@@ -21,6 +44,7 @@ function AddBlog() {
           id="outlined-basic"
           label="Title"
           variant="outlined"
+          onChange={(e)=>setBlogs({...blogs,title : e.target.value})}
         />
         <TextField
           className="w-100 mt-3"
@@ -28,6 +52,7 @@ function AddBlog() {
           id="outlined-basic"
           label="Write your Content"
           variant="outlined"
+          onChange={(e)=>setBlogs({...blogs,content:e.target.value})}
         />
         <TextField
           className="w-100 mt-3"
@@ -35,14 +60,15 @@ function AddBlog() {
           id="outlined-basic"
           label="Image URL"
           variant="outlined"
+          onChange={(e)=>setBlogs({...blogs,image:e.target.value})}
         />
-        <div className=" d-flex aligh-items-center justify-content-center mt-5">
+        <div className=" d-flex align-items-center justify-content-center mt-5">
           <Button
-            
+            onClick={onHandleSubmit}
             variant="outlined"
             style={{ height: "60px" }}
           >
-            Add
+            Add Content
           </Button>
         </div>
       </div>

@@ -1,38 +1,68 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import ListSubheader from '@mui/material/ListSubheader';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
+import { deleteBlog, getBlog } from '../services/allAPI';
+import { Button } from 'react-bootstrap';
+import EditBlog from './EditBlog';
 function ViewBlog() {
+  const [allBlogs, setAllBlogs] = useState([])
+
+  const getAllBlogs = async() =>{
+    const response = await getBlog()
+    setAllBlogs(response.data)
+    
+  }
+  useEffect(()=>{
+    getAllBlogs()
+
+  },[])
+  
+  const handleDelete = async (id)=>{
+    const res = await deleteBlog(id)
+    if (res.status == 200) {
+      getAllBlogs()
+      alert("Blog Deleted")
+    }
+    else{
+      console.log(res.error);
+      
+    }
+  }
+
   return (
     <div>
       <Container >
        <ImageList >
       <ImageListItem key="Subheader" cols={2}>
-        <ListSubheader component="div">December</ListSubheader>
+        {/* <ListSubheader component="div">December</ListSubheader> */}
       </ImageListItem>
-      {itemData.map((item) => (
-        <ImageListItem key={item.img}>
+      
+      {allBlogs.map((item) => (
+        <ImageListItem key={item.id}>
+                 
+
           <img
-            srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-            src={`${item.img}?w=248&fit=crop&auto=format`}
+            srcSet=""
+            src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
             alt={item.title}
             loading="lazy"
           />
+          <EditBlog />
           <ImageListItemBar
             title={item.title}
-            subtitle={item.author}
+            subtitle={item.content}
             actionIcon={
-              <IconButton
-                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                aria-label={`info about ${item.title}`}
-              >
-                
-              </IconButton>
+             
+              <Button onClick={()=>handleDelete(item.id)}>DELETE</Button>
+              
             }
+           
           />
+           
         </ImageListItem>
       ))}
     </ImageList>
