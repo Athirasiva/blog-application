@@ -19,6 +19,8 @@ import {
 } from "@mui/material";
 function ViewBlog() {
   const [allBlogs, setAllBlogs] = useState([]);
+  const [blogUpdate, setBlogUpdate] = useState([])
+
 
   const getAllBlogs = async () => {
     const response = await getBlog();
@@ -26,7 +28,7 @@ function ViewBlog() {
   };
   useEffect(() => {
     getAllBlogs();
-  }, []);
+  }, [blogUpdate]);
 
   const handleDelete = async (id) => {
     const res = await deleteBlog(id);
@@ -88,7 +90,11 @@ function ViewBlog() {
               <Typography variant="body2" className="description">
                 {item.content}
               </Typography>
+              <div className="d-flex">
               <Button onClick={() => handleDelete(item.id)}>DELETE</Button>
+              <EditBlog blog={item} setBlogUpdate={setBlogUpdate}/>
+              </div>
+              
             </CardContent>
           </Card>
           
