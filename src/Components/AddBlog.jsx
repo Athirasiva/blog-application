@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import "./blog.css";
 import { addBlog } from "../services/allAPI";
+import { useNavigate } from "react-router-dom";
 
 function AddBlog() {
+  const navigate = useNavigate()
   const [blogs,setBlogs] = useState([{
     title : "",
     content:"",
@@ -18,6 +20,7 @@ function AddBlog() {
       const res = await addBlog(blogs)
       if (res.status == 201) {
         alert(" Blog added successfully")
+        navigate('/')
       }
       else{
         console.log(res.error);
